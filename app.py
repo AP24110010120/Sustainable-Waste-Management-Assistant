@@ -23,24 +23,36 @@ def scan_waste():
 
     data = request.get_json()
 
-    item = data.get("item")
+    if not data:
+        return jsonify({
+            "error": "Request body is missing."
+        }), 400
+
+    item = data.get("item", "").strip()
 
     if not item:
         return jsonify({
-            "error": "Waste item is required."
+            "error": "Please enter a waste item."
+        }), 400
+
+    if len(item) > 100:
+        return jsonify({
+            "error": "Waste item name is too long."
         }), 400
 
     try:
         result = generate_waste_guide(item)
 
         return jsonify({
+            "success": True,
             "item": item,
             "guide": result
         })
 
-    except Exception as e:
+    except Exception:
         return jsonify({
-            "error": str(e)
+            "success": False,
+            "error": "Unable to generate waste guide. Please try again."
         }), 500
 
 
