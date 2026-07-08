@@ -1,0 +1,21 @@
+# Python
+.venv/
+venv/
+env/
+
+__pycache__/
+*/__pycache__/
+*.py[cod]
+
+# Node
+node_modules/
+
+# VS Code
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log

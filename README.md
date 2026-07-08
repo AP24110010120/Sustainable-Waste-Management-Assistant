@@ -58,6 +58,21 @@ http://localhost:5173
 - Recycling Suggestions
 - Dynamic React Frontend
 
+## Architecture
+
+The application architecture, component responsibilities, request flow, API design, and scalability considerations are documented in [docs/Architecture.md](docs/Architecture.md).
+
+## Deployment Validation
+
+Local environment validation, backend and frontend startup checks, and end-to-end workflow notes are documented in [docs/DeploymentValidation.md](docs/DeploymentValidation.md).
+
+## Documentation
+
+- [docs/Architecture.md](docs/Architecture.md)
+- [docs/DeploymentValidation.md](docs/DeploymentValidation.md)
+- [docs/Conclusion.md](docs/Conclusion.md)
+
 ## Author
 
 Chevuru abhishek
+Ayan Changdar
