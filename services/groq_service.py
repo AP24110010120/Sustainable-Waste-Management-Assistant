@@ -3,6 +3,7 @@ from config import Config
 
 client = Groq(api_key=Config.GROQ_API_KEY)
 
+
 def generate_waste_guide(item):
 
     prompt = f"""
@@ -34,7 +35,7 @@ Keep the response clear, practical, and under 250 words.
 """
 
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model=Config.GROQ_MODEL,
         messages=[
             {
                 "role": "system",
@@ -45,8 +46,8 @@ Keep the response clear, practical, and under 250 words.
                 "content": prompt
             }
         ],
-        temperature=0.3,
-        max_tokens=500
+        temperature=Config.GROQ_TEMPERATURE,
+        max_tokens=Config.GROQ_MAX_TOKENS
     )
 
     return response.choices[0].message.content
