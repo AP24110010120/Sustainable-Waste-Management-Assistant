@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from services.api_routes import api_blueprint
 from services.groq_service import generate_waste_guide
 
 app = Flask(__name__)
 CORS(app)
+app.register_blueprint(api_blueprint)
 
 @app.route("/")
 def home():
