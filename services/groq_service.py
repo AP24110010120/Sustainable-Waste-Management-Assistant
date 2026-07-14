@@ -1,9 +1,38 @@
-from groq import Groq
 from config import Config
 
-client = Groq(api_key=Config.GROQ_API_KEY)
+GROQ_API_KEY = Config.GROQ_API_KEY
+
+try:
+    from groq import Groq
+except ImportError:
+    Groq = None
+
+client = None
+if GROQ_API_KEY and Groq is not None:
+    try:
+        client = Groq(api_key=GROQ_API_KEY)
+    except Exception:
+        client = None
+
+
+def _mock_waste_guide(item):
+    return (
+        f"♻️ Waste Category: General Waste\n"
+        f"🗑️ Disposal Method: Dispose of '{item}' in regular trash or recycling if accepted locally. "
+        f"Clean and separate any recyclable portions first.\n"
+        f"♻️ Recycling Information: Items made from paper, plastic, glass, and metal are often recyclable, "
+        f"but check your local program before recycling.\n"
+        f"⚠️ Safety Precautions: Handle broken or sharp materials with care and wear gloves when needed. "
+        f"Keep hazardous substances like batteries, electronics, and chemicals separate.\n"
+        f"🌍 Environmental Impact: Improper disposal can pollute soil and waterways and harm wildlife.\n"
+        f"💡 Eco-Friendly Suggestion: Reduce waste by choosing reusable products, avoiding single-use packaging, "
+        f"and composting organic material when possible."
+    )
+
 
 def generate_waste_guide(item):
+    if client is None:
+        return _mock_waste_guide(item)
 
     prompt = f"""
 You are an expert Sustainable Waste Management Assistant.
@@ -33,20 +62,23 @@ Respond in the following format:
 Keep the response clear, practical, and under 250 words.
 """
 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[
-            {
-                "role": "system",
-                "content": "You are a helpful AI waste management expert."
-            },
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
-        temperature=0.3,
-        max_tokens=500
-    )
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful AI waste management expert."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.3,
+            max_tokens=500
+        )
 
-    return response.choices[0].message.content
+        return response.choices[0].message.content
+    except Exception:
+        return _mock_waste_guide(item)
