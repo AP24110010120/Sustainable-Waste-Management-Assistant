@@ -53,14 +53,13 @@ export default function MapPage() {
 
   const fetchCenters = async () => {
     setLoading(true)
-    setError(null)
 
     try {
       const res = await API.get('/api/get-centers')
       setCenters(res.data.centers || [])
     } catch (e) {
       console.error(e)
-      setError('Unable to load collection centers. Please try again later.')
+      setCenters([])
     } finally {
       setLoading(false)
     }
@@ -122,11 +121,6 @@ export default function MapPage() {
           </div>
         </div>
 
-        {error && (
-          <div className="mt-6 rounded-3xl border border-red-700/50 bg-red-500/10 px-4 py-4 text-sm text-red-200">
-            {error}
-          </div>
-        )}
 
         <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
           <section className="space-y-4">
@@ -157,11 +151,11 @@ export default function MapPage() {
                     >
                       <Popup>
                         <div className="space-y-2 text-sm">
-                          <div className="font-semibold text-slate-900 dark:text-white">{center.name || 'Collection Center'}</div>
+                          <div className="font-semibold text--primary">{center.name || 'Collection Center'}</div>
                           {center.address && <div>{center.address}</div>}
                           {center.city && <div>{center.city}</div>}
                           {center.waste_types && (
-                            <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                            <div className="mt-2 text-xs text--muted">
                               Accepts: {center.waste_types.join(', ')}
                             </div>
                           )}
@@ -181,11 +175,11 @@ export default function MapPage() {
 
               <div className="mt-4 space-y-3">
                 {loading ? (
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-6 text-center text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
+                  <div className="rounded-2xl theme-card px-4 py-6 text-center text-sm text--muted">
                     Loading centers…
                   </div>
                 ) : filteredCenters.length === 0 ? (
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-6 text-center text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
+                  <div className="rounded-2xl theme-card px-4 py-6 text-center text-sm text--muted">
                     No centers found for this category.
                   </div>
                 ) : (
@@ -206,12 +200,12 @@ export default function MapPage() {
                       >
                         <div className="flex items-center justify-between gap-3">
                           <div>
-                            <div className="text-base font-semibold text-slate-900 dark:text-white">{center.name || 'Unnamed Center'}</div>
-                            <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                            <div className="text-base font-semibold text--primary">{center.name || 'Unnamed Center'}</div>
+                            <div className="mt-1 text-sm text--muted">
                               {center.address || center.city || 'Address not available'}
                             </div>
                           </div>
-                          <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                          <div className="text-xs font-semibold uppercase tracking-[0.16em] text--muted">
                             {center.waste_types ? center.waste_types.length : 0} categories
                           </div>
                         </div>
@@ -228,9 +222,9 @@ export default function MapPage() {
               <h2 className="text-lg font-semibold text-emerald-50">Selected center</h2>
 
               {activeCenter ? (
-                <div className="mt-4 space-y-4 text-sm text-slate-700 dark:text-slate-300">
+                <div className="mt-4 space-y-4 text-sm text--secondary">
                   <div>
-                    <div className="font-medium text-slate-900 dark:text-white">{activeCenter.name || 'Collection center'}</div>
+                    <div className="font-medium text--primary">{activeCenter.name || 'Collection center'}</div>
                     {activeCenter.address && <div className="mt-1">{activeCenter.address}</div>}
                     {activeCenter.city && <div>{activeCenter.city}</div>}
                   </div>
@@ -258,7 +252,7 @@ export default function MapPage() {
                       <div className="font-semibold">Accepted materials</div>
                       <div className="mt-2 flex flex-wrap gap-2">
                         {activeCenter.waste_types.map((type) => (
-                          <span key={type} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                          <span key={type} className="rounded-full px-3 py-1 text-xs font-medium chip-emerald">
                             {type}
                           </span>
                         ))}
@@ -269,12 +263,12 @@ export default function MapPage() {
                   {activeCenter.notes && (
                     <div>
                       <div className="font-semibold">Notes</div>
-                      <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{activeCenter.notes}</p>
+                      <p className="mt-2 text-sm leading-6 text--secondary">{activeCenter.notes}</p>
                     </div>
                   )}
                 </div>
               ) : (
-                <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                <p className="mt-4 text-sm text--muted">
                   Select a collection center from the map or list to view details.
                 </p>
               )}

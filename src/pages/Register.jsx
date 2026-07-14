@@ -20,9 +20,9 @@ export default function Register(){
         </div>
       )}
       <form onSubmit={handle} className="mt-4 space-y-3">
-        <input value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email" className="w-full p-2 border rounded" />
-        <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" className="w-full p-2 border rounded" />
-        <button className="w-full bg-brand text-white p-2 rounded">Register</button>
+        <input value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email" className="w-full input-themed" />
+        <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Password" className="w-full input-themed" />
+        <button className="w-full btn-emerald">Register</button>
       </form>
     </div>
   )

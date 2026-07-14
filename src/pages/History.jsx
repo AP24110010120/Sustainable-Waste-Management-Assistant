@@ -22,7 +22,7 @@ export default function History(){
       setHistory(res.data.history || [])
     }catch(e){
       console.error(e)
-      setError('Unable to load history. Please try again later.')
+      setHistory([])
     }finally{
       setLoading(false)
     }
@@ -95,10 +95,6 @@ export default function History(){
           {loading ? (
             <div className="rounded-3xl border border-slate-200 bg-slate-50 px-6 py-8 text-center text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
               Loading scan history…
-            </div>
-          ) : error ? (
-            <div className="rounded-3xl border border-red-200 bg-red-50 px-6 py-8 text-center text-sm text-red-700 shadow-sm">
-              {error}
             </div>
           ) : filtered.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-400">
