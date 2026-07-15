@@ -75,5 +75,9 @@ Local environment validation, backend and frontend startup checks, and end-to-en
 ## Author
 
 Chevuru abhishek
+
 Ayan Changdar
+
 Ayush Kumar Saha
+
+Jagruthi Pithalla
