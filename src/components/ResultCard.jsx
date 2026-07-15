@@ -1,6 +1,6 @@
 import CategoryChip from './CategoryChip'
 
-const parseRecyclingSteps = (value) => {
+const parseList = (value) => {
   if (Array.isArray(value)) return value.filter(Boolean)
   if (typeof value === 'string') {
     return value
@@ -10,6 +10,9 @@ const parseRecyclingSteps = (value) => {
   }
   return []
 }
+
+const isUrl = (value) =>
+  typeof value === 'string' && /^(https?:)?\/\//i.test(value)
 
 export default function ResultCard({ analysis }) {
   if (!analysis) return null
@@ -21,15 +24,16 @@ export default function ResultCard({ analysis }) {
   const hazardWarning =
     analysis.hazard_warning || analysis.hazard || 'No hazard warning available.'
   const disposal =
-    analysis.disposal || analysis.disposal_instructions || 'No disposal instructions available.'
-  const recyclingSteps = parseRecyclingSteps(
-    analysis.recycling || analysis.recycling_steps
+    analysis.disposal_instructions || analysis.disposal || 'No disposal instructions available.'
+  const recyclingSteps = parseList(
+    analysis.recycling_steps || analysis.recycling
   )
-  const ecoFriendlyTip =
-    analysis.eco_friendly_tip || analysis.eco_friendly_suggestion ||
-    'No eco-friendly suggestions available.'
-  const acceptedFacilityTypes =
-    analysis.accepted_facility_types || analysis.accepted_facilities || []
+  const ecoSuggestions = parseList(
+    analysis.eco_suggestions || analysis.eco_friendly_tip || analysis.eco_friendly_suggestion
+  )
+  const acceptedFacilityTypes = parseList(
+    analysis.accepted_facility_types || analysis.accepted_facilities
+  )
   const aiSource = analysis.ai_source || analysis.aiSource || 'Groq'
   const rawGuide = typeof analysis === 'string' ? analysis : analysis.guide || null
   const allStructuredFields =
@@ -39,9 +43,16 @@ export default function ResultCard({ analysis }) {
     <div className="mt-6 max-w-4xl mx-auto rounded-3xl border border-emerald-900/60 bg-[#0c241c] p-6 text-emerald-50 shadow-[0_0_0_1px_rgba(74,222,128,0.08),0_20px_45px_rgba(0,0,0,0.35)]">
       <div className="grid gap-6 lg:grid-cols-[auto_1fr] lg:items-start">
         <div className="flex items-center justify-center w-24 h-24 rounded-3xl border border-emerald-800/70 bg-emerald-500/10 text-4xl shadow-inner">
-          {categoryIcon}
-        </div>
-
+            {isUrl(categoryIcon) ? (
+              <img
+                src={categoryIcon}
+                alt={category}
+                className="max-h-16 max-w-full rounded-2xl"
+              />
+            ) : (
+              <span>{categoryIcon}</span>
+            )}
+          </div>
         <div className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -102,9 +113,19 @@ export default function ResultCard({ analysis }) {
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="space-y-4 rounded-3xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-800">
           <h4 className="text-lg font-semibold">Eco-Friendly Suggestions</h4>
-          <p className="text-sm leading-7 whitespace-pre-wrap">
-            {ecoFriendlyTip}
-          </p>
+          {ecoSuggestions.length > 0 ? (
+            <ul className="list-disc list-inside mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              {ecoSuggestions.map((suggestion, index) => (
+                <li key={`${suggestion}-${index}`} className="leading-7">
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+              No eco-friendly suggestions available.
+            </p>
+          )}
         </div>
 
         <div className="space-y-4 rounded-3xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-800">

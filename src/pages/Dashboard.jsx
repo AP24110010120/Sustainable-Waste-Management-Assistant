@@ -35,7 +35,6 @@ export default function Dashboard(){
       setData(res.data.data || {})
     }catch(e){
       console.error(e)
-      setError('Unable to load dashboard data. Please try again later.')
       setData({})
     }finally{
       setLoading(false)
@@ -98,11 +97,6 @@ export default function Dashboard(){
               Monitor your waste scan performance with charts and summary metrics.
             </p>
           </div>
-          {error && (
-            <div className="rounded-3xl border border-red-700/50 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-              {error}
-            </div>
-          )}
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

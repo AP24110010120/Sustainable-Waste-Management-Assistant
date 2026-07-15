@@ -35,7 +35,9 @@ export default function Home(){
     setAnalysis(null)
 
     try {
-      const res = await API.post('/scan', { item: trimmed })
+     const res = await API.post('/scan', { item: trimmed })
+console.log("API Response:", res.data)
+
       if (res.data?.success && res.data.analysis) {
         setAnalysis(res.data.analysis)
       } else if (res.data?.success && res.data.guide) {
